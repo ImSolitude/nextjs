@@ -5,12 +5,7 @@ import utilStyles from "../styles/utils.module.css";
 import { useEffect, useState } from "react";
 
 const siteTitle = "Default Title";
-const Home = ({ data }) => {
-  const [metaTags, setMetaTags] = useState();
-  useEffect(() => {
-    console.log(data.metatags);
-    setMetaTags(data.metatags);
-  }, []);
+const Home = ({ metaTags }) => {
   return (
     <>
       <Head>
@@ -76,7 +71,7 @@ const Home = ({ data }) => {
 };
 
 // This gets called on every request getServerSideProps
-export async function getServerSideProps() {
+Home.getInitialProps = async (ctx) => {
   console.log("Hi");
 
   // Fetch data from external API
@@ -87,6 +82,7 @@ export async function getServerSideProps() {
   console.log("data", data);
 
   // Pass data to the page via props
-  return { props: { data } };
-}
+  return { metaTags: data.metatags };
+};
+
 export default Home;
