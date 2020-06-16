@@ -81,8 +81,8 @@ const Home = ({ metaTags }) => {
 };
 
 // This gets called on every request getServerSideProps
-Home.getInitialProps = async (ctx) => {
-  console.log("Hi");
+Home.getStaticProps = async () => {
+  console.log("Fetching");
 
   // Fetch data from external API
   const res = await fetch(
@@ -94,5 +94,4 @@ Home.getInitialProps = async (ctx) => {
   // Pass data to the page via props
   return { metaTags: data.metatags };
 };
-
 export default Home;
