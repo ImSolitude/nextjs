@@ -40,7 +40,7 @@ const Layout = ({ children, home }) => {
       <main>{children}</main>
       {!home && (
         <div className={styles.backToHome}>
-          <Link href="/" as="/nextjs">
+          <Link href="/">
             <a>← Back to home</a>
           </Link>
         </div>
