@@ -97,14 +97,13 @@ Home.getInitialProps = async ({ req }) => {
       console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
 
       return {
-        // metaTags: data.results.portal.career.seo_home_page.data,
-        // subdomain: subdomain,
+        metaTags: data.results.portal.career.seo_home_page.data,
+        subdomain: subdomain,
       };
     }
     return {};
     // Pass data to the page via props
-  }
-  if (typeof window !== "undefined" && !req) {
+  } else if (typeof window !== "undefined" && !req) {
     subdomain = window.location.host.split(".")[0];
     console.log("Subdomain", subdomain);
 
@@ -122,8 +121,6 @@ Home.getInitialProps = async ({ req }) => {
         subdomain: subdomain,
       };
     }
-  } else {
-    return {};
   }
 };
 export default Home;
