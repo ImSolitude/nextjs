@@ -1,5 +1,5 @@
 import Head from "next/head";
-import fetch from "node-fetch";
+import fetch from "isomorphic-fetch";
 import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ const Home = ({ metaTags }) => {
           <meta
             property="og:image"
             content={
-              metaTags.image.media ||
+              (metaTags.image && metaTags.image.media) ||
               `https://og-image.now.sh/${encodeURI(
                 metaTags.title
               )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`
@@ -59,7 +59,7 @@ const Home = ({ metaTags }) => {
           <meta
             name="twitter:image"
             content={
-              metaTags.image.media ||
+              (metaTags.image && metaTags.image.media) ||
               `https://og-image.now.sh/${encodeURI(
                 metaTags.title
               )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`
@@ -83,44 +83,54 @@ const Home = ({ metaTags }) => {
   );
 };
 
-// This gets called on every request getServerSideProps
-Home.getInitialProps = async ({ req }) => {
-  let subdomain;
-  if (req && req.headers.host) {
-    subdomain = req.headers.host.split(".")[0];
-    const res = await fetch(
-      `https://devapi.elevatus.jobs/api/candidate/v1/portal?sub_domain=${subdomain}`
-    );
-    const data = await res.json();
+export async function getServerSideProps({ req }) {
+  const subdomain = req.headers.host.split(".")[0];
+  const res = await fetch(
+    `https://devapi.elevatus.jobs/api/candidate/v1/portal?sub_domain=${subdomain}`
+  );
+  const data = await res.json();
 
-    // if (data.results) {
-    //   console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
+  console.log("data", data);
 
-    return {
+  return {
+    props: {
       metaTags: data.results.portal.career.seo_home_page.data,
       subdomain: subdomain,
-    };
-    // }
-  } else if (typeof window !== "undefined" && !req) {
-    subdomain = window.location.host.split(".")[0];
-    console.log("Subdomain", subdomain);
+    }, // will be passed to the page component as props
+  };
+}
 
-    const res = await fetch(
-      `https://devapi.elevatus.jobs/api/candidate/v1/portal?sub_domain=${subdomain}`
-    );
+// This gets called on every request getServerSideProps
+// Home.getInitialProps = async ({ req, isServer }) => {
+//   let subdomain;
+//   if (typeof window === "undefined") {
+//     subdomain = req.headers.host.split(".")[0];
+//     const res = await fetch(
+//       `https://devapi.elevatus.jobs/api/candidate/v1/portal?sub_domain=${subdomain}`
+//     );
+//     const data = await res.json();
 
-    const data = await res.json();
+//     return {
+//       metaTags: data.results.portal.career.seo_home_page.data,
+//       subdomain: subdomain,
+//     };
+//   } else {
+//     subdomain = window.location.hostname.split(".")[0];
+//     console.log("Subdomain", subdomain);
+//     // https://run.mocky.io/v3/a330a94a-8d78-4696-ab3c-7a7345eb7c31
+//     const res = await fetch(
+//       `https://run.mocky.io/v3/a330a94a-8d78-4696-ab3c-7a7345eb7c31`
+//     );
 
-    if (data.results) {
-      console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
+//     const data = await res.json();
 
-      return {
-        metaTags: data.results.portal.career.seo_home_page.data,
-        subdomain: subdomain,
-      };
-    }
-  } else {
-    return {};
-  }
-};
+//     // console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
+
+//     return {
+//       // metaTags: data.results.portal.career.seo_home_page.data,
+//       metaTags: data.metatags,
+//       subdomain: subdomain,
+//     };
+//   }
+// };
 export default Home;
