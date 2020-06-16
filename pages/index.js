@@ -86,7 +86,7 @@ const Home = ({ metaTags }) => {
 // This gets called on every request getServerSideProps
 Home.getInitialProps = async ({ req }) => {
   let subdomain;
-  if (req) {
+  if (req && req.headers.host) {
     subdomain = req.headers.host.split(".")[0];
     const res = await fetch(
       `https://devapi.elevatus.jobs/api/candidate/v1/portal?sub_domain=${subdomain}`
@@ -94,7 +94,7 @@ Home.getInitialProps = async ({ req }) => {
     const data = await res.json();
 
     // if (data.results) {
-    // console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
+    //   console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
 
     return {
       metaTags: data.results.portal.career.seo_home_page.data,
