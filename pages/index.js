@@ -93,14 +93,14 @@ Home.getInitialProps = async ({ req }) => {
     );
     const data = await res.json();
 
-    if (data.results) {
-      console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
+    // if (data.results) {
+    // console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
 
-      return {
-        metaTags: data.results.portal.career.seo_home_page.data,
-        subdomain: subdomain,
-      };
-    }
+    return {
+      metaTags: data.results.portal.career.seo_home_page.data,
+      subdomain: subdomain,
+    };
+    // }
   } else if (typeof window !== "undefined" && !req) {
     subdomain = window.location.host.split(".")[0];
     console.log("Subdomain", subdomain);
