@@ -1,4 +1,4 @@
-const repoName = process.env.NODE_ENV === "production" ? "/nextjs" : "";
+const repoName = process.env.NODE_ENV === "production" ? "" : "";
 
 module.exports = {
   assetPrefix: repoName,
