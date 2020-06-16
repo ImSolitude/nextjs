@@ -1,8 +1,7 @@
 import Head from "next/head";
 import styles from "./layout.module.css";
 import utilStyles from "../styles/utils.module.css";
-
-import PrefixedLink from "../components/PrefixedLink";
+import Link from "next/link";
 
 const name = "Muhammad J";
 export const siteTitle = "Default Title";
@@ -21,7 +20,7 @@ const Layout = ({ children, home }) => {
           </>
         ) : (
           <>
-            <PrefixedLink href="/">
+            <Link href="/">
               <a>
                 <img
                   src="/images/profile.jpg"
@@ -29,11 +28,11 @@ const Layout = ({ children, home }) => {
                   alt={name}
                 />
               </a>
-            </PrefixedLink>
+            </Link>
             <h2 className={utilStyles.headingLg}>
-              <PrefixedLink href="/">
+              <Link href="/">
                 <a className={utilStyles.colorInherit}>{name}</a>
-              </PrefixedLink>
+              </Link>
             </h2>
           </>
         )}
@@ -41,9 +40,9 @@ const Layout = ({ children, home }) => {
       <main>{children}</main>
       {!home && (
         <div className={styles.backToHome}>
-          <PrefixedLink href="/">
+          <Link href="/">
             <a>← Back to home</a>
-          </PrefixedLink>
+          </Link>
         </div>
       )}
     </div>

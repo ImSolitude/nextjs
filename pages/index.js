@@ -3,8 +3,7 @@ import fetch from "isomorphic-fetch";
 import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import { useEffect, useState } from "react";
-
-import PrefixedLink from "../components/PrefixedLink";
+import Link from "next/link";
 
 const siteTitle = "Default Title";
 const Home = ({ metaTags }) => {
@@ -74,9 +73,9 @@ const Home = ({ metaTags }) => {
           <p>Meta tags for this page coming from API.</p>
 
           <br />
-          <PrefixedLink href="/posts/first-post">
+          <Link href="/posts/first-post">
             <a>Go To First Post</a>
-          </PrefixedLink>
+          </Link>
         </section>
       </Layout>
     </>
