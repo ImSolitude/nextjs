@@ -121,6 +121,8 @@ Home.getInitialProps = async ({ req }) => {
         subdomain: subdomain,
       };
     }
+  } else {
+    return {};
   }
 };
 export default Home;
