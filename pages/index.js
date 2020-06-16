@@ -4,6 +4,8 @@ import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import { useEffect, useState } from "react";
 
+import PrefixedLink from "../components/PrefixedLink";
+
 const siteTitle = "Default Title";
 const Home = ({ metaTags }) => {
   return (
@@ -63,7 +65,15 @@ const Home = ({ metaTags }) => {
       <Layout home>
         <section className={utilStyles.headingMd}>
           <p>Next.js</p>
-          <p>This is a sample website.</p>
+          <p>Meta tags for this page coming from API.</p>
+          <small>
+            Go to First post then return to this page & Check Network in
+            console.
+          </small>
+          <br />
+          <PrefixedLink href="/posts/first-post">
+            <a>Go To First Post</a>
+          </PrefixedLink>
         </section>
       </Layout>
     </>

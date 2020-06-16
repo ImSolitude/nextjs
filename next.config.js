@@ -1,11 +1,9 @@
-const isProd = process.env.NODE_ENV === "production";
+const repoName = process.env.NODE_ENV === "production" ? "/nextjs" : "";
 
 module.exports = {
-  assetPrefix: isProd ? "/" : "",
-  devIndicators: {
-    autoPrerender: false,
-  },
+  assetPrefix: repoName,
   env: {
-    ASSET_PREFIX: isProd ? "/" : "",
+    linkPrefix: repoName,
   },
+  generateBuildId: async () => "current",
 };
