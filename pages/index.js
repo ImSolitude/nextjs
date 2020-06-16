@@ -74,9 +74,9 @@ const Home = ({ metaTags }) => {
           <p>Meta tags for this page coming from API.</p>
 
           <br />
-          {/* <PrefixedLink href="/posts/first-post">
+          <PrefixedLink href="/posts/first-post">
             <a>Go To First Post</a>
-          </PrefixedLink> */}
+          </PrefixedLink>
         </section>
       </Layout>
     </>
@@ -104,12 +104,24 @@ Home.getInitialProps = async ({ req }) => {
     return {};
     // Pass data to the page via props
   }
+  if (typeof window !== "undefined" && !req) {
+    subdomain = window.location.host.split(".")[0];
+    console.log("Subdomain", subdomain);
 
-  // Fetch data from external API
-  // const res = await fetch(
-  //   `https://run.mocky.io/v3/a330a94a-8d78-4696-ab3c-7a7345eb7c31`
-  // );
+    const res = await fetch(
+      `https://devapi.elevatus.jobs/api/candidate/v1/portal?sub_domain=${subdomain}`
+    );
 
-  return {};
+    const data = await res.json();
+
+    if (data.results) {
+      console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
+
+      return {
+        metaTags: data.results.portal.career.seo_home_page.data,
+        subdomain: subdomain,
+      };
+    }
+  }
 };
 export default Home;
