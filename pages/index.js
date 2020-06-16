@@ -81,21 +81,17 @@ const Home = ({ metaTags }) => {
 };
 
 // This gets called on every request getServerSideProps
-Home.getInitialProps = async ({ req }) => {
-  if (req) {
-    return {};
-  } else {
-    console.log("Fetching");
+Home.getInitialProps = async () => {
+  console.log("Fetching");
 
-    // Fetch data from external API
-    const res = await fetch(
-      `https://run.mocky.io/v3/a330a94a-8d78-4696-ab3c-7a7345eb7c31`
-    );
-    const data = await res.json();
-    console.log("data", data);
+  // Fetch data from external API
+  const res = await fetch(
+    `https://run.mocky.io/v3/a330a94a-8d78-4696-ab3c-7a7345eb7c31`
+  );
+  const data = await res.json();
+  console.log("data", data);
 
-    // Pass data to the page via props
-    return { metaTags: data.metatags };
-  }
+  // Pass data to the page via props
+  return { metaTags: data.metatags };
 };
 export default Home;
