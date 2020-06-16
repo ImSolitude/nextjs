@@ -97,8 +97,8 @@ Home.getInitialProps = async ({ req }) => {
       console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
 
       return {
-        metaTags: data.results.portal.career.seo_home_page.data,
-        subdomain: subdomain,
+        // metaTags: data.results.portal.career.seo_home_page.data,
+        // subdomain: subdomain,
       };
     }
     return {};
