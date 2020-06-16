@@ -101,8 +101,6 @@ Home.getInitialProps = async ({ req }) => {
         subdomain: subdomain,
       };
     }
-    return {};
-    // Pass data to the page via props
   } else if (typeof window !== "undefined" && !req) {
     subdomain = window.location.host.split(".")[0];
     console.log("Subdomain", subdomain);
