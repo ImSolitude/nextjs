@@ -22,9 +22,12 @@ const Home = ({ metaTags }) => {
         {metaTags && (
           <meta
             property="og:image"
-            content={`https://og-image.now.sh/${encodeURI(
-              siteTitle
-            )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
+            content={
+              metaTags.image.media ||
+              `https://og-image.now.sh/${encodeURI(
+                metaTags.title
+              )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`
+            }
           />
         )}
 
@@ -55,9 +58,12 @@ const Home = ({ metaTags }) => {
         {metaTags && (
           <meta
             name="twitter:image"
-            content={`https://og-image.now.sh/${encodeURI(
-              siteTitle
-            )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
+            content={
+              metaTags.image.media ||
+              `https://og-image.now.sh/${encodeURI(
+                metaTags.title
+              )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`
+            }
           />
         )}
       </Head>
@@ -66,14 +72,11 @@ const Home = ({ metaTags }) => {
         <section className={utilStyles.headingMd}>
           <p>Next.js</p>
           <p>Meta tags for this page coming from API.</p>
-          <small>
-            Go to First post then return to this page & Check Network in
-            console.
-          </small>
+
           <br />
-          <PrefixedLink href="/posts/first-post">
+          {/* <PrefixedLink href="/posts/first-post">
             <a>Go To First Post</a>
-          </PrefixedLink>
+          </PrefixedLink> */}
         </section>
       </Layout>
     </>
@@ -81,17 +84,32 @@ const Home = ({ metaTags }) => {
 };
 
 // This gets called on every request getServerSideProps
-Home.getInitialProps = async () => {
-  console.log("Fetching");
+Home.getInitialProps = async ({ req }) => {
+  let subdomain;
+  if (req) {
+    subdomain = req.headers.host.split(".")[0];
+    const res = await fetch(
+      `https://devapi.elevatus.jobs/api/candidate/v1/portal?sub_domain=${subdomain}`
+    );
+    const data = await res.json();
+
+    if (data.results) {
+      console.log("Meta Tags:", data.results.portal.career.seo_home_page.data);
+
+      return {
+        metaTags: data.results.portal.career.seo_home_page.data,
+        subdomain: subdomain,
+      };
+    }
+    return {};
+    // Pass data to the page via props
+  }
 
   // Fetch data from external API
-  const res = await fetch(
-    `https://run.mocky.io/v3/a330a94a-8d78-4696-ab3c-7a7345eb7c31`
-  );
-  const data = await res.json();
-  console.log("data", data);
+  // const res = await fetch(
+  //   `https://run.mocky.io/v3/a330a94a-8d78-4696-ab3c-7a7345eb7c31`
+  // );
 
-  // Pass data to the page via props
-  return { metaTags: data.metatags };
+  return {};
 };
 export default Home;
